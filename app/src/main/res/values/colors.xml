@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="intense_background">#FF222222</color>
+    <color name="intense_text_primary">#FF00A5FF</color>
+    <color name="intense_text_secondary">#FFCCCCCC</color>
+</resources>
