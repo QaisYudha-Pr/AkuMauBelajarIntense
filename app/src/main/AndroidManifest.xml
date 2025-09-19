@@ -23,6 +23,11 @@
         <activity
             android:name=".DetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".ChangeCredentialsActivity"
+            android:exported="false"
+            android:label="Ubah Kredensial" /> 
+            <!-- Menambahkan label untuk ActionBar/Toolbar jika ada -->
     </application>
 
 </manifest>

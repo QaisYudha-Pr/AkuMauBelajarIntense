@@ -1,24 +1,60 @@
 package com.hai.akumaubelajarintense
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class DetailActivity : AppCompatActivity() {
+
+    private var currentUsername: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val username = intent.getStringExtra("EXTRA_USERNAME") // Terima username dari Intent
-        val detailTextView: TextView = findViewById(R.id.detailTextView)
-        val headerTextView: TextView = findViewById(R.id.headerTextView) // Referensi ke header
+        currentUsername = intent.getStringExtra("EXTRA_USERNAME")
 
-        if (username != null && username.isNotEmpty()) {
-            headerTextView.text = "Login Berhasil!"
-            detailTextView.text = "Selamat datang di aplikasi, $username!\n\nIni adalah halaman setelah Anda berhasil login atau mendaftar."
-        } else {
-            headerTextView.text = "Akses Ditolak"
-            detailTextView.text = "Username tidak boleh kosong. Silakan kembali dan coba lagi."
+        val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
+
+        if (savedInstanceState == null) {
+            // Muat HomeFragment dengan argumen username
+            val initialHomeFragment = HomeFragment().apply {
+                arguments = Bundle().apply {
+                    putString("USERNAME_ARG", currentUsername)
+                }
+            }
+            loadFragment(initialHomeFragment)
         }
+
+        bottomNavigation.setOnItemSelectedListener { item ->
+            var selectedFragment: Fragment? = null
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    selectedFragment = HomeFragment().apply {
+                        arguments = Bundle().apply {
+                            putString("USERNAME_ARG", currentUsername) // Kirim username ke HomeFragment
+                        }
+                    }
+                }
+                R.id.navigation_profile -> {
+                    selectedFragment = ProfileFragment().apply {
+                        arguments = Bundle().apply {
+                            putString("USERNAME_ARG", currentUsername)
+                        }
+                    }
+                }
+            }
+            if (selectedFragment != null) {
+                loadFragment(selectedFragment)
+            }
+            true
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }
